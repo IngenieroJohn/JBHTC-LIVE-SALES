@@ -1,36 +1,171 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Power BI Report Slideshow</title>
+<meta charset="UTF-8">
+<title>Business Intelligence Ecuador Tonicorp</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
   <style>
     html, body {
       margin: 0;
       padding: 0;
-      height: 100%;
+      background: #001f3f;
       overflow: hidden;
+      font-family: 'Segoe UI', sans-serif;
+      color: white;
     }
+ 
+    #background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+ 
+    .content {
+      position: relative;
+      z-index: 2;
+      padding: 30px 40px 0 60px;
+      width: 100%;
+    }
+ 
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+ 
+    .logo {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 2px solid #011d42;
+    }
+ 
+    h1 {
+      font-size: 28px;
+      color: #00bfff;
+      margin: 0;
+    }
+ 
+    .slider {
+      display: flex;
+      overflow: hidden;
+      width: 85%;
+      margin-left: 60px;
+      border-radius: 20px;
+      box-shadow: 0 0 10px #00bfff;
+    }
+ 
+    .slide {
+      min-width: 100%;
+      transition: transform 1s ease-in-out;
+    }
+ 
     iframe {
       width: 100%;
-      height: 100%;
+      height: 500px;
       border: none;
     }
-  </style>
+ 
+    .slider-track {
+      display: flex;
+      width: 300%;
+      animation: scroll 30s infinite;
+    }
+ 
+    @keyframes scroll {
+      0% { transform: translateX(0%); }
+      33% { transform: translateX(-100%); }
+      66% { transform: translateX(-200%); }
+      100% { transform: translateX(0%); }
+    }
+</style>
 </head>
 <body>
-  <iframe id="frame" src="https://app.powerbi.com/reportEmbed?reportId=d22cd57e-25d4-4d79-a73b-d7eba7a0fd2c&autoAuth=true&ctid=433ec967-f454-49f2-b132-d07f81545e02"></iframe>
-
-  <script>
-    const urls = [
-      "https://app.powerbi.com/reportEmbed?reportId=d22cd57e-25d4-4d79-a73b-d7eba7a0fd2c&autoAuth=true&ctid=433ec967-f454-49f2-b132-d07f81545e02",
-      "https://app.powerbi.com/reportEmbed?reportId=5d656b33-ce80-4667-9c37-ed15029fad48&autoAuth=true&ctid=433ec967-f454-49f2-b132-d07f81545e02"
-    ];
-
-    let index = 0;
-    setInterval(() => {
-      index = (index + 1) % urls.length;
-      document.getElementById("frame").src = urls[index];
-    }, 20000); // Cambia cada 20 segundos
-  </script>
+ 
+<canvas id="background"></canvas>
+ 
+<div class="content">
+<div class="header">
+<img src="C:\Users\xatore13\Downloads\OneDrive_2025-06-16\HTC - PREVENTA LIVE\img\color.jpg" alt="Logo BI" class="logo">
+<h1>Business Intelligence Ecuador Tonicorp</h1>
+</div>
+ 
+  <div class="slider">
+<div class="slider-track">
+<div class="slide">
+<iframe src="https://app.powerbi.com/reportEmbed?reportId=d22cd57e-25d4-4d79-a73b-d7eba7a0fd2c&autoAuth=true&ctid=433ec967-f454-49f2-b132-d07f81545e02"></iframe>
+</div>
+<div class="slide">
+<iframe src="https://app.powerbi.com/reportEmbed?reportId=4e5775a0-0d10-497c-af5e-7ebea9531930&autoAuth=true&ctid=433ec967-f454-49f2-b132-d07f81545e02"></iframe>
+</div>
+<div class="slide">
+<iframe src="https://app.powerbi.com/reportEmbed?reportId=1ee08efe-1212-4a54-9f99-7f3a8fac0bfd&autoAuth=true&ctid=433ec967-f454-49f2-b132-d07f81545e02"></iframe>
+</div>
+</div>
+</div>
+</div>
+ 
+<!-- Fondo animado tipo nodos -->
+<script>
+const canvas = document.getElementById('background');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+ 
+let particles = [];
+for (let i = 0; i < 120; i++) {
+  particles.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    vx: (Math.random() - 0.5) * 0.8,
+    vy: (Math.random() - 0.5) * 0.8
+  });
+}
+ 
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = '#00bfff';
+ 
+  for (let i = 0; i < particles.length; i++) {
+    let p = particles[i];
+    p.x += p.vx;
+    p.y += p.vy;
+ 
+    if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+    if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+ 
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+    ctx.fill();
+ 
+    for (let j = i + 1; j < particles.length; j++) {
+      let p2 = particles[j];
+      let dx = p.x - p2.x;
+      let dy = p.y - p2.y;
+      let dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 100) {
+        ctx.strokeStyle = 'rgba(0,191,255,0.1)';
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.stroke();
+      }
+    }
+  }
+ 
+  requestAnimationFrame(draw);
+}
+ 
+draw();
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+</script>
+ 
 </body>
 </html>
